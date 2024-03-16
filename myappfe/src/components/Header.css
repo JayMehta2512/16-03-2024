@@ -1,0 +1,44 @@
+
+
+.navbar {
+    background-color: #4a2424;
+    padding: 15px;
+    color: white;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .navbar-brand {
+    font-size: 1.5em;
+    color: white;
+  }
+  
+  .navbar-toggler {
+    background-color: transparent;
+    border: none;
+  }
+  
+  .navbar-toggler-icon {
+    background-color: white;
+  }
+  
+  .navbar-toggler:focus {
+    outline: none;
+  }
+  
+  .navbar-nav {
+    text-align: center;
+  }
+  
+  .nav-link {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .nav-link:hover {
+    color: #ffc107; /* Change the color on hover as needed */
+  }
+  
+ 
+  

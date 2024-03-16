@@ -1,0 +1,8 @@
+Project name
+Backend
+Project ID
+backend-abf27
+Project number
+428963108782
+Default GCP resource location
+Not yet selected

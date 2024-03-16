@@ -1,0 +1,42 @@
+/* Features.css */
+
+/* Styles for the main heading */
+.heading1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+  background-color: lightgoldenrodyellow;
+}
+
+/* Styles for the main content container */
+.main-content-container1 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  background-color: bisque;
+}
+
+/* Styles for each section containing the feature details */
+.orders-section1 {
+  margin-top: 20px;
+  width: 45%;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Styles for the headings of each feature section */
+.orders-section1 h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+/* Styles for the paragraphs of each feature section */
+.orders-section1 p {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #777;
+}

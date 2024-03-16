@@ -1,0 +1,349 @@
+
+import React, { useState } from 'react';
+import '../styles/SignUpPage.css';
+import { Link } from 'react-router-dom';
+
+// Input component for text fields
+const InputField = ({ label, type, value, onChange }) => {
+  return (
+    <label>
+      {label}:
+      <input
+        type={type}
+        value={value}
+        onChange={onChange}
+      />
+    </label>
+  );
+};
+
+const Signup = () => {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showNotification, setShowNotification] = useState(false);
+
+  const handleRegister = async () => {
+    try {
+        const response = await fetch('http://127.0.0.1:8000/myappbe/register/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, username, password }), // Ensure these variables hold the correct values
+        });
+        if (response.ok) {
+            console.log('Registration successful');
+            window.location.href = '/login';
+            // Redirect the user to another page or perform some action upon successful registration
+        } else {
+            console.error('Registration failed');
+            // Handle failed registration, show error message to the user, etc.
+        }
+    } catch (error) {
+        console.error('Error occurred during registration:', error);
+        // Handle any network errors or other exceptions
+    }
+};
+
+
+  const closeNotification = () => {
+    setShowNotification(false);
+  };
+
+  return (
+    <>
+      <div className='mainback'>
+        <div className="signup-container">
+          <div className="signup-header">
+            <h2>Sign Up</h2>
+          </div>
+          <form className="signup-form">
+            <InputField
+              label="Username"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <InputField
+              label="Email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <InputField
+              label="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button type="button" onClick={handleRegister}>
+              Sign Up
+            </button>
+            {showNotification && (
+              <div className="notification">
+                <p>You are registered! Welcome aboard!</p>
+                <button type="button" onClick={closeNotification}>
+                  Close
+                </button>
+              </div>
+            )}
+          </form>
+          <div className="login-link">
+            <p>Already have an account?<Link to="/login" className="nav-link"><span>Login</span></Link></p>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+
+
+export default Signup;
+
+import React, { useState } from 'react';
+import '../styles/LoginPage.css';
+import { Link } from 'react-router-dom';
+import { database } from '../firebase/FirebaseConfig';
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+
+const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = async () => {
+    try {
+      await firebase.auth().signInWithEmailAndPassword(email, password);
+      console.log('Login successful');
+      window.location.href = '/'; // Redirect to home page upon successful login
+    } catch (error) {
+      console.error('Login failed:', error.message);
+      // Handle failed login, display error message, etc.
+    }
+  };
+
+  return (
+    <>
+      <div className="login-container">
+        <div className="login-header">
+          <h2>Login</h2>
+        </div>
+        <form className="login-form">
+          <label>
+            Email:
+            <input
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </label>
+          <br />
+          <label>
+            Password:
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </label>
+          <br />
+          <button type="button" onClick={handleLogin}>
+            Login
+          </button>
+        </form>
+        <div className="signup-link">
+          <p>Don't have an account?<Link to="/SignUp" className="nav-link"><span>New User</span></Link></p>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Login;
+____________________________________________________________________________________________
+       const handleRegister = async () => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(database, email, password);
+      const user = userCredential.user;
+
+      await addDoc(collection(database, 'users'), {
+        uid: user.uid, // Add user's UID as a field
+        username: username,
+        email: email,
+        password: password
+      });
+____________________________________________________________________________________________
+import React, { useState, useEffect } from 'react';
+import '../styles/MyProfile.css';
+import styled from 'styled-components';
+import { collection, getDocs, getFirestore, doc, updateDoc, addDoc } from 'firebase/firestore';
+import { database } from '../firebase/FirebaseConfig';
+const MyProfile = () => {
+  const [editing, setEditing] = useState(false);
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [location, setLocation] = useState('');
+  const [pincode, setPincode] = useState('');
+  const [userId= database.user.uid, setUserId] = useState(''); 
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const firestore = getFirestore();
+        const querySnapshot = await getDocs(collection(firestore, 'users', "userId"));
+        querySnapshot.forEach((doc) => {
+          const userData = doc.data();
+          setUsername(userData.username);
+          setEmail(userData.email);
+          setPassword(userData.password);
+          setLocation(userData.location);
+          setPincode(userData.pincode);
+          setUserId(doc.id); // Set the user ID
+        });
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, [userId]);
+
+  const handleEditClick = () => {
+    setEditing(true);
+  };
+
+  const handleSaveClick = async () => {
+    try {
+      const firestore = getFirestore();
+      if (editing) {
+        // Update user data if editing
+        const userDocRef = doc(firestore, 'users', userId);
+        await updateDoc(userDocRef, {
+          username: username,
+          email: email,
+          password: password,
+          location: location,
+          pincode: pincode,
+        });
+        console.log('User data updated successfully');
+      } else {
+        // Add new user document if not editing
+        const newUserRef = await addDoc(collection(firestore, 'users'), {
+          username: username,
+          email: email,
+          password: password,
+          location: location,
+          pincode: pincode,
+        });
+        setUserId(newUserRef.id); // Set the user ID for future updates
+        console.log('New user added with ID: ', newUserRef.id);
+      }
+      setEditing(false);
+    } catch (error) {
+      console.error('Error updating user data:', error);
+    }
+  };
+
+  const handleCancelClick = () => {
+    // Reset the edited values to the fetched values
+    setUsername('');
+    setEmail('');
+    setPassword('');
+    setLocation('');
+    setPincode('');
+
+    setEditing(false);
+  };
+
+  return (
+    <Wrapper>
+      <div className="user-profile-container">
+        <h2>User Profile</h2>
+        <div className="user-profile-info">
+          <div className="profile-item">
+            <label>Username:</label>
+            {editing ? (
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            ) : (
+              <span>{username}</span>
+            )}
+          </div>
+          <div className="profile-item">
+            <label>Email:</label>
+            {editing ? (
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            ) : (
+              <span>{email}</span>
+            )}
+          </div>
+          <div className="profile-item">
+            <label>Password:</label>
+            {editing ? (
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            ) : (
+              <span>{password}</span>
+            )}
+          </div>
+          <div className="profile-item">
+            <label>Location:</label>
+            {editing ? (
+              <input
+                type="text"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+              />
+            ) : (
+              <span>{location}</span>
+            )}
+          </div>
+          <div className="profile-item">
+            <label>Pincode:</label>
+            {editing ? (
+              <input
+                type="text"
+                value={pincode}
+                onChange={(e) => setPincode(e.target.value)}
+              />
+            ) : (
+              <span>{pincode}</span>
+            )}
+          </div>
+          <div className="profile-item">
+            {editing ? (
+              <>
+                <button onClick={handleSaveClick}>Save</button>
+                <button onClick={handleCancelClick}>Cancel</button>
+              </>
+            ) : (
+              <button onClick={handleEditClick}>Edit</button>
+            )}
+          </div>
+        </div>
+      </div>
+    </Wrapper>
+  );
+};
+
+const Wrapper = styled.section`
+  padding: 40px;
+  background-color: lightblue;
+  max-width: auto;
+  max-height: auto;
+`;
+
+export default MyProfile;
+

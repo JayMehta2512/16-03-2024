@@ -1,0 +1,95 @@
+.admin-dashboard {
+    margin: 20px;
+  }
+  .user-table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  .user-table th, .user-table td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  .user-table th {
+    background-color: #f2f2f2;
+  }
+  
+  .edit-button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .reports-list {
+    margin-bottom: 20px;
+  }
+  
+  .report-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .report-button:hover {
+    background-color: #0056b3;
+  }
+  .admin-dashboard {
+    padding: 20px;
+  }
+  
+  .user-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .user-table th, .user-table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+  }
+  
+  .user-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  .edit-button {
+    background-color: blue;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .edit-button:hover {
+    background-color: darkblue;
+  }
+  
+  .report-button {
+    background-color: blue;
+    color: white;
+    padding: 6px 10px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .report-button:hover {
+    background-color: darkblue;
+  }
+  
